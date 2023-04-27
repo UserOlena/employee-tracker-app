@@ -1,24 +1,25 @@
 const inquirer = require('inquirer');
-const connection = require('./config/connection.js');
+const { selectAll } = require('./queries');
+
 
 inquirer.prompt([
     {
-        name: 'question',
+        name: 'action',
         message: 'Which action are you interested in pursuing?',
         type: 'list',
         choices: [
             {
                 name: 'View all departments.',
-                value: viewAllDepartments,
+                value: 'department',
             },
-            // {
-            //     name: 'View all roles.',
-            //     value: ,
-            // },
-            // {
-            //     name: 'View all employees.',
-            //     value: ,
-            // },
+            {
+                name: 'View all roles.',
+                value: 'role',
+            },
+            {
+                name: 'View all employees.',
+                value: 'employee',
+            },
             // {
             //     name: 'Add a department.',
             //     value: ,
@@ -41,11 +42,19 @@ inquirer.prompt([
     }
 ]).then((response) => {
     console.log(response);
-    const choice = response.question;
-    choice();
+    // const choice = response.question;
+    // choice();
+    switch (response.action) {
+        case 'department':
+            selectAll(response.action);
+            break;
+        case 'role':
+            selectAll(response.action);
+            break;
+        case 'employee':
+            selectAll(response.action);
+            break;
+        default:
+            console.log('No action found');
+    }
 })
-
-
-function viewAllDepartments() {
-    console.log('view departm function');
-}
