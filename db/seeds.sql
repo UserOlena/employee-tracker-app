@@ -1,28 +1,29 @@
-INSERT INTO department(id, name)
-VALUES  (uuid(), 'director'),
-        (uuid(), 'success manager'),
-        (uuid(), 'instructor'),
-        (uuid(), 'teacher assistant'),
-        (uuid(), 'tutor'),
-        (uuid(), 'admission');
+INSERT INTO department(name)
+VALUES  ('director'),
+        ('success manager'),
+        ('instructor'),
+        ('teacher assistant'),
+        ('tutor'),
+        ('admission');
 
 
-INSERT INTO role(id, title, salary)
-VALUES  (uuid(), 'director', 250000),
-        (uuid(), 'success manager', 120000),
-        (uuid(), 'instructor', 120000),
-        (uuid(), 'teacher assistant', 70000),
-        (uuid(), 'junior teacher assistant', 50000),
-        (uuid(), 'tutor', 60000),
-        (uuid(), 'admission', 60000);
+INSERT INTO role(title, salary)
+VALUES  ('director', 250000),
+        ('success manager', 120000),
+        ('instructor', 120000),
+        ('teacher assistant', 70000),
+        ('junior teacher assistant', 50000),
+        ('tutor', 60000),
+        ('admission manager', 110000),
+        ('admission', 60000);
 
 
-INSERT INTO employee(id, first_name, last_name)
-VALUES  (uuid(), 'Bossy', 'Man'),
-        (uuid(), 'Krishana', 'Anderson'),
-        (uuid(), 'Emamnuel', 'Jucaban'),
-        (uuid(), 'John', 'Doe'),
-        (uuid(), 'Jane', 'Doe'),
-        (uuid(), 'Rapunzel', 'Casing'),
-        (uuid(), 'Ramon', 'Sanches'),
-        (uuid(), 'Ryan', 'McGale');
+INSERT INTO employee(first_name, last_name)
+VALUES  ('Bossy', 'Man'),
+        ('Krishana', 'Anderson'),
+        ('Emamnuel', 'Jucaban'),
+        ('John', 'Doe'),
+        ('Jane', 'Doe'),
+        ('Rapunzel', 'Casing'),
+        ('Ramon', 'Sanches'),
+        ('Ryan', 'McGale');
