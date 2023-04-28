@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const { selectAll } = require('./queries');
+const { selectAll, addNewDepartment } = require('./queries');
 
 
 inquirer.prompt([
@@ -9,52 +9,55 @@ inquirer.prompt([
         type: 'list',
         choices: [
             {
-                name: 'View all departments.',
+                name: 'View all departments',
                 value: 'department',
             },
             {
-                name: 'View all roles.',
+                name: 'View all roles',
                 value: 'role',
             },
             {
-                name: 'View all employees.',
+                name: 'View all employees',
                 value: 'employee',
             },
+            {
+                name: 'Add a department',
+                value: 'addDepartment',
+            
+            },
+            {
+                name: 'Add a role',
+                value: 'addRole',               
+            },
             // {
-            //     name: 'Add a department.',
+            //     name: 'Add an employee',
             //     value: ,
             // },
             // {
-            //     name: 'Add a role.',
-            //     value: ,               
-            // },
-            // {
-            //     name: 'Add an employee.',
-            //     value: ,
-            // },
-            // {
-            //     name: 'Update an employee role.',
+            //     name: 'Update an employee role',
             //     value: ,
             // },
 
     ]
-
+    },
+    {
+        name: 'addDepartment',
+        message: 'Kindly type the new department name in order to add it to the Department table.',
+        type: 'input',
+        when: (response) => response.action === 'addDepartment',
     }
 ]).then((response) => {
     console.log(response);
-    // const choice = response.question;
-    // choice();
-    switch (response.action) {
-        case 'department':
-            selectAll(response.action);
-            break;
-        case 'role':
-            selectAll(response.action);
-            break;
-        case 'employee':
-            selectAll(response.action);
-            break;
-        default:
-            console.log('No action found');
+
+    if (response.action === 'department') {
+        selectAll(response.action);
+    } else if (response.action === 'role') {
+        selectAll(response.action);
+    } else if(response.action === 'employee') {
+        selectAll(response.action);
+    } else if (response.addDepartment) {
+        addNewDepartment(response.addDepartment);
+    } else {
+        console.log('No action found.');
     }
 })
