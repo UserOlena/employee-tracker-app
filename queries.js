@@ -2,7 +2,7 @@ const connection = require('./config/connection.js');
 
 
 function selectAll(tableName) {
-    connection.query(`SELECT * FROM ${tableName};`, (error, result) => {
+    connection.query(`SELECT * FROM ?;`, [tableName], (error, result) => {
         if (error) {
             throw new Error(error);
         } else {
@@ -15,7 +15,8 @@ function selectAll(tableName) {
 function addNewDepartment(newDepartment) {
     connection.query(`
         INSERT INTO department(name)
-        VALUES ('${newDepartment}');`,
+        VALUES (?);`,
+        [newDepartment],
         (error, result) => {
             if (error) {
                 console.log(`${result} result`);
@@ -31,7 +32,8 @@ function addNewDepartment(newDepartment) {
 function addRole(roleTitle, roleSalary, roleDepartmentId) {
     connection.query(`
         INSERT INTO role(title, salary, department_id)
-        VALUES ('${roleTitle}', '${roleSalary}', ${roleDepartmentId});`,
+        VALUES (?, ?, ?);`,
+        [roleTitle, roleSalary, roleDepartmentId],
         (error, result) => {
             if (error) {
                 throw new Error(error);
@@ -45,7 +47,8 @@ function addRole(roleTitle, roleSalary, roleDepartmentId) {
 function addEmployee(employeeFirstName, employeeLastName, employeeRoleId, employeeManagerId) {
  connection.query(`
     INSERT INTO employee(first_name, last_name, role_id, manager_id)
-    VALUES ('${employeeFirstName}', '${employeeLastName}', ${employeeRoleId}, ${employeeManagerId});`,
+    VALUES (?, ?, ?, ?);`,
+    [employeeFirstName, employeeLastName, employeeRoleId, employeeManagerId],
     (error, result) => {
         if (error) {
             throw new Error(error);
