@@ -1,28 +1,38 @@
 const connection = require('./config/connection.js');
-const consoleTable = require('console.table');
 
 
 function selectAll(tableName) {
-    connection.query(`SELECT * FROM ${tableName}`, (error, result) => {
+    connection.query(`SELECT * FROM ${tableName};`, (error, result) => {
         if (error) {
             throw new Error(error);
         } else {
-            console.log(result);
+            console.table(result);
         }
     });
 }
 
 
-function viewAllRoles() {
+function addNewDepartment(newDepartment) {
+    connection.query(`
+        INSERT INTO department(name)
+        VALUES ('${newDepartment}');`,
+        (error, result) => {
+            if (error) {
+                console.log(`${result} result`);
+                throw new Error(error);
+            } else {
+                console.log(`${newDepartment} department has succesfully been added to the department database table!`);
+            }
+        });
 
 }
 
 
-function viewAllEmployees() {
+function addRole(newRole) {
 
 }
 
 
 //connection.end();
 
-module.exports = { selectAll }
+module.exports = { selectAll, addNewDepartment }
