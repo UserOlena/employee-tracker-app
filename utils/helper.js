@@ -8,7 +8,7 @@ async function renderEmployeesChoicesList() {
     employeesList.forEach(element => {
         const employee = {
             name: `${element.first_name} ${element.last_name} - ${element.department_name}`,
-            value: `${element.id}`,
+            value: element.id,
         }
     
         employeeChoices.push(employee);
@@ -25,7 +25,7 @@ async function renderDepartmentsList() {
     departmentList.forEach(element => {
         const department = {
             name: `${element.name}`,
-            value: `${element.id}`,
+            value: element.id,
         }
     
         departmentChoices.push(department);
