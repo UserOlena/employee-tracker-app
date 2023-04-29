@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 const { selectAll, addNewDepartment, addRole, addEmployee, updateEmployeeRole } = require('./queries');
-const { renderEmployeesChoicesList, renderDepartmentsList } = require('./utils/helper')
+const { showDepartments, showRoles, showEmployees, renderEmployeesChoicesList, renderDepartmentsList } = require('./utils/helper')
 
 
 inquirer.prompt([
@@ -184,14 +184,11 @@ inquirer.prompt([
     console.log(response);
 
     if (response.action === 'department') {
-        const currentDepartments = await selectAll(response.action);
-        console.table(currentDepartments);
+        await showDepartments();
     } else if (response.action === 'role') {
-        const currentRoles = await selectAll(response.action);
-        console.table(currentRoles);
+        await showRoles();
     } else if(response.action === 'employee') {
-        const currentEmployees = await selectAll(response.action);
-        console.table(currentEmployees);
+        await showEmployees();
     } else if (response.action === 'addDepartment') {
         addNewDepartment(response.departmentName);
     } else if (response.action === 'addRole') {
