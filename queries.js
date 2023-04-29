@@ -1,10 +1,11 @@
 const connection = require('./config/connection.js');
 
 
-async function selectAll(tableName) {
+// function is invoked to fetch information from the database and present it in a tabular format on the console.
+async function sqlSelect(sql) {
     try {
-        const [ rows ] = await connection.query(`SELECT * FROM ${tableName};`);
-        return rows;
+        const [ result ] = await connection.query(sql);
+        console.table(result);
     } catch (error) {
         console.log(error);
     }
@@ -84,4 +85,4 @@ async function employeesListForPrompt() {
 
 //connection.end();
 
-module.exports = { selectAll, addNewDepartment, addRole, addEmployee, updateEmployeeRole, employeesListForPrompt }
+module.exports = { sqlSelect, addNewDepartment, addRole, addEmployee, updateEmployeeRole, employeesListForPrompt }
