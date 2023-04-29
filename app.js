@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
-const { selectAll, addNewDepartment, addRole, addEmployee } = require('./queries');
+const { selectAll, addNewDepartment, addRole, addEmployee, updateEmployeeRole } = require('./queries');
+const { renderEmployeesChoicesList, renderDepartmentsList } = require('./utils/helper')
 
 
 inquirer.prompt([
@@ -33,12 +34,11 @@ inquirer.prompt([
                 name: 'Add an employee',
                 value: 'addEmployee',
             },
-            // {
-            //     name: 'Update an employee role',
-            //     value: ,
-            // },
-
-    ]
+            {
+                name: 'Update an employee role',
+                value: 'updateEmployeeRole',
+            },
+        ],
     },
     {
         name: 'departmentName',
@@ -166,22 +166,44 @@ inquirer.prompt([
             },
         ]
     },
-]).then((response) => {
+    {
+        name: 'employeeToUpdate',
+        message: 'Kindly choose the existing employee to update their information.',
+        type: 'list',
+        when: (response) => response.action === 'updateEmployeeRole',
+        choices: renderEmployeesChoicesList,
+    },
+    {
+        name: 'updatedRole',
+        message: 'Kindly choose the new employee role to update their information.',
+        type: 'list',
+        when: (response) => response.employeeToUpdate,
+        choices: renderDepartmentsList,
+    }
+]).then(async (response) => {
     console.log(response);
 
     if (response.action === 'department') {
-        selectAll(response.action);
+        const currentDepartments = await selectAll(response.action);
+        console.table(currentDepartments);
     } else if (response.action === 'role') {
-        selectAll(response.action);
+        const currentRoles = await selectAll(response.action);
+        console.table(currentRoles);
     } else if(response.action === 'employee') {
-        selectAll(response.action);
+        const currentEmployees = await selectAll(response.action);
+        console.table(currentEmployees);
     } else if (response.action === 'addDepartment') {
         addNewDepartment(response.departmentName);
     } else if (response.action === 'addRole') {
         addRole(response.roleTitle, response.roleSalary, response.roleDepartmentId);
     } else if (response.action === 'addEmployee') {
         addEmployee(response.employeeFirstName, response.employeeLastName, response.employeeRoleId, response.employeeManagerId);
+    } else if (response.employeeToUpdate) {
+        console.log(`employee id: ${response.employeeToUpdate}, new role: ${response.updatedRole}`);
+        updateEmployeeRole(response.employeeToUpdate, response.updatedRole);
     } else {
         console.log('No action found.');
     }
 })
+
+
