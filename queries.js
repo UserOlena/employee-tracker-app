@@ -23,18 +23,18 @@ async function addNewDepartment(newDepartment) {
     }
 }
 
-function addRole(roleTitle, roleSalary, roleDepartmentId) {
-    connection.query(`
+
+// function adds new job role, its salary and associated department_id to the role database.
+async function addRole(roleTitle, roleSalary, roleDepartmentId) {
+    const sql = `
         INSERT INTO role(title, salary, department_id)
-        VALUES (?, ?, ?);`,
-        [roleTitle, roleSalary, roleDepartmentId],
-        (error, result) => {
-            if (error) {
-                throw new Error(error);
-            } else {
-                console.log(`New ${roleTitle} role and it's salary of ${roleSalary} has succesfully been added to the Role database table!`);
-            }
-        })
+        VALUES (?, ?, ?);`;
+    try {
+        await connection.query(sql, [roleTitle, roleSalary, roleDepartmentId]);
+        console.log(`New ${roleTitle} role and it's salary of ${roleSalary} has succesfully been added to the Role database table!`);
+    } catch (error) {
+        console.log(error);
+    }  
 }
 
 
