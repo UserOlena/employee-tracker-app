@@ -11,22 +11,17 @@ async function selectAll(tableName) {
 }
 
 
-function addNewDepartment(newDepartment) {
-    connection.query(`
+async function addNewDepartment(newDepartment) {
+    const sql = `
         INSERT INTO department(name)
-        VALUES (?);`,
-        [newDepartment],
-        (error, result) => {
-            if (error) {
-                console.log(`${result} result`);
-                throw new Error(error);
-            } else {
-                console.log(`${newDepartment} department has succesfully been added to the Department database table!`);
-            }
-        }
-    )
+        VALUES (?);`
+    try {
+    await connection.query(sql, [newDepartment]);
+    console.log(`${newDepartment} department has succesfully been added to the Department database table!`);
+    } catch (error) {
+        console.log(error);
+    }
 }
-
 
 function addRole(roleTitle, roleSalary, roleDepartmentId) {
     connection.query(`
