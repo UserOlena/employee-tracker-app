@@ -148,4 +148,16 @@ async function renderManagerChoicesList() {
 }
 
 
-module.exports = { showDepartments, showRoles, showEmployees, addNewDepartment, addNewRole, addNewEmployee, updateEmployeeRole, renderEmployeesChoicesList, renderRolesList, renderDepartmentList, renderManagerChoicesList }
+module.exports = { 
+    showDepartments, 
+    showRoles, 
+    showEmployees, 
+    addNewDepartment, 
+    addNewRole, 
+    addNewEmployee, 
+    updateEmployeeRole, 
+    renderEmployeesChoicesList, 
+    renderRolesList, 
+    renderDepartmentList, 
+    renderManagerChoicesList 
+}

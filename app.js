@@ -1,5 +1,17 @@
 const inquirer = require('inquirer');
-const { showDepartments, showRoles, showEmployees, addNewDepartment, addNewRole, addNewEmployee, updateEmployeeRole, renderEmployeesChoicesList, renderRolesList, renderDepartmentList, renderManagerChoicesList } = require('./utils/helper')
+const { 
+    showDepartments, 
+    showRoles, 
+    showEmployees, 
+    addNewDepartment, 
+    addNewRole, 
+    addNewEmployee, 
+    updateEmployeeRole, 
+    renderEmployeesChoicesList, 
+    renderRolesList, 
+    renderDepartmentList, 
+    renderManagerChoicesList 
+} = require('./utils/helper');
 
 
 inquirer.prompt([
