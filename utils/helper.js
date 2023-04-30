@@ -62,7 +62,6 @@ async function addNewEmployee(valuesArray) {
 
 
 async function updateEmployeeRole(valuesArray) {
-
     const sql = `
         UPDATE employee
         SET role_id = ?
@@ -103,7 +102,6 @@ async function renderRolesList() {
         }
         roleChoices.push(role);
     })     
-    console.log(roleChoices);
     return roleChoices;    
 }
 
@@ -148,6 +146,19 @@ async function renderManagerChoicesList() {
 }
 
 
+// function that take department ID as a parameter and retrieves the total salary of employees working in that department.
+async function departmTotalBudget(departmId) {
+    const sql = `
+    SELECT SUM(salary) AS "Total Salary For Chosen Department"
+    FROM employee e
+		JOIN role r
+    WHERE e.role_id = r.id
+    AND r.department_id = ?;`;
+    const result = await sqlSelect(sql, departmId);
+    console.table(result);
+}
+
+
 module.exports = { 
     showDepartments, 
     showRoles, 
@@ -159,5 +170,6 @@ module.exports = {
     renderEmployeesChoicesList, 
     renderRolesList, 
     renderDepartmentList, 
-    renderManagerChoicesList 
+    renderManagerChoicesList,
+    departmTotalBudget
 }
