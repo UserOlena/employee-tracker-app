@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const { showDepartments, showRoles, showEmployees, addNewDepartment, addNewRole, addNewEmployee, updateEmployeeRole, renderEmployeesChoicesList, renderRolesList } = require('./utils/helper')
+const { showDepartments, showRoles, showEmployees, addNewDepartment, addNewRole, addNewEmployee, updateEmployeeRole, renderEmployeesChoicesList, renderRolesList, renderDepartmentList } = require('./utils/helper')
 
 
 inquirer.prompt([
@@ -62,32 +62,7 @@ inquirer.prompt([
         message: `Kindly choose the department associated with the newly added title.`,
         type: 'list',
         when: (response) => response.action === 'addRole',
-        choices: [
-            {
-                name: 'director',
-                value: 1,
-            },
-            {
-               name: 'success manager',
-               value: 2, 
-            },
-            {
-                name: 'instructor',
-                value: 3,
-            },
-            {
-                name: 'teacher assistant',
-                value: 4,
-            },
-            {
-                name: 'tutor',
-                value: 5,
-            },
-            {
-                name: 'admission',
-                value: 6,
-            }
-        ]
+        choices: renderDepartmentList,
     },
     {
         name: 'employeeFirstName',
