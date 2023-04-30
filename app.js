@@ -113,40 +113,61 @@ inquirer.prompt([
         name: 'newRoleId',
         message: 'Kindly choose the new employee role to update their information.',
         type: 'list',
-        when: (response) => response.employeeId,
+        when: (response) => response.action === 'updateEmployeeRole',
         choices: renderRolesList,
     }
 ]).then(async (response) => {
     console.log(response);
 
-    if (response.action === 'department') {
-        const currentDepartments = await showDepartments();
-        console.table(currentDepartments);
-    } else if (response.action === 'role') {
-        const currentRoles = await showRoles();
-        console.table(currentRoles);
-    } else if(response.action === 'employee') {
-        const currentEmployees = await showEmployees();
-        console.table(currentEmployees);
-    } else if (response.action === 'addDepartment') {
-        const array = [];
-        array.push(response.departmentName);
-        await addNewDepartment(array);
-    } else if (response.action === 'addRole') {
-        const array = [];
-        array.push(response.roleTitle, parseInt(response.roleSalary), response.roleDepartmentId);
-        await addNewRole(array);
-    } else if (response.action === 'addEmployee') {
-        const array = [];
-        array.push(response.employeeFirstName, response.employeeLastName, response.employeeRoleId, response.employeeManagerId);
-        await addNewEmployee(array);
-    } else if (response.employeeId) {
-        const array = [];
-        array.push(response.newRoleId, response.employeeId);
-        await updateEmployeeRole(array);
-    } else {
-        console.log('No action found.');
+    switch (response.action) {
+        case 'department':
+            const currentDepartments = await showDepartments();
+            console.table(currentDepartments);
+            break;
+        case 'role':
+            const currentRoles = await showRoles();
+            console.table(currentRoles);
+            break;
+        case 'employee':
+            const currentEmployees = await showEmployees();
+            console.table(currentEmployees);
+            break;
+        case 'addDepartment':
+            const departArray = [];
+            departArray.push(response.departmentName);
+            await addNewDepartment(departArray);
+            break;
+        case 'addRole':
+            const roleArray = [];
+            roleArray.push(response.roleTitle, parseInt(response.roleSalary), response.roleDepartmentId);
+            await addNewRole(roleArray);
+            break;
+        case 'addEmployee':
+            const employeeArray = [];
+            employeeArray.push(response.employeeFirstName, response.employeeLastName, response.employeeRoleId, response.employeeManagerId);
+            await addNewEmployee(employeeArray);
+            break;
+        case 'updateEmployeeRole':
+            const updateEmployeeArray = [];
+            updateEmployeeArray.push(response.newRoleId, response.employeeId);
+            await updateEmployeeRole(updateEmployeeArray);
+            break;
+        default:
+            console.log('No action found.');
     }
 })
+ 
+
+
+
+
+
+
+
+  
+
+
+        
+
 
 
