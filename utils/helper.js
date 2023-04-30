@@ -13,7 +13,7 @@ async function showDepartments() {
 // function passes SQL to the "connection.query()" to retrieve the current roles when a user selects the "view all roles" option.
 async function showRoles() {
     const sql = `
-        SELECT r.id, r.title, r.salary, d.name 
+        SELECT r.id, r.title, r.salary, d.name as department_name
         FROM role r
             LEFT JOIN department d on r.department_id = d.id;`;
     const result = await sqlSelect(sql);;
