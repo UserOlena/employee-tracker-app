@@ -13,6 +13,7 @@ const {
     renderManagerChoicesList,
     departmTotalBudget,
     deleteInfo,
+    updateEmployeeManager
 } = require('./utils/helper');
 
 function init() {
@@ -59,6 +60,10 @@ function init() {
                     name: 'Delete information',
                     value: 'deleteInformation',
                 },
+                {
+                    name: 'Update employee\'s manager',
+                    value: 'updateEmployeeManager',
+                },
             ],
         },
         {
@@ -88,54 +93,54 @@ function init() {
         },
         {
             name: 'employeeFirstName',
-            message: 'Kindly type the new employee first name in order to add them to the Employee database table.',
+            message: 'Kindly type the new employee first name in order to add them to the Employee database table',
             type: 'input',
             when: (response) => response.action === 'addEmployee',
         },
         {
             name: 'employeeLastName',
-            message: 'Kindly type the new employee last name in order to add them to the Employee database table.',
+            message: 'Kindly type the new employee last name in order to add them to the Employee database table',
             type: 'input',
             when: (response) => response.action === 'addEmployee',
         },
         {
             name: 'employeeRoleId',
-            message: `Kindly choose the role associated with the newly added employee.`,
+            message: `Kindly choose the role associated with the newly added employee`,
             type: 'list',
             when: (response) => response.action === 'addEmployee',
             choices: renderRolesList,
         },
         {
             name: 'employeeManagerId',
-            message: `Assign a manager to the newly added employee or choose "Manager doesn\'t apply to this employee".`,
+            message: `Assign a manager to the newly added employee or choose "Manager doesn\'t apply to this employee"`,
             type: 'list',
             when: (response) => response.action === 'addEmployee',
             choices: renderManagerChoicesList,
         },
         {
             name: 'employeeId',
-            message: 'Kindly choose the existing employee to update their information.',
+            message: 'Kindly choose the existing employee to update their information',
             type: 'list',
             when: (response) => response.action === 'updateEmployeeRole',
             choices: renderEmployeesChoicesList,
         },
         {
             name: 'newRoleId',
-            message: 'Kindly choose the new employee role to update their information.',
+            message: 'Kindly choose the new employee role to update their information',
             type: 'list',
             when: (response) => response.action === 'updateEmployeeRole',
             choices: renderRolesList,
         },
         {
             name: 'departmentId',
-            message: 'Kindly choose the department you would like to view the total utilized budget of.',
+            message: 'Kindly choose the department you would like to view the total utilized budget of',
             type: 'list',
             when: (response) => response.action === 'departmBudget',
             choices: renderDepartmentList,
         },
         {
             name: 'whatToDelete',
-            message: 'Please select the option you want to delete.',
+            message: 'Please select the option you want to delete',
             type: 'list',
             when: (response) => response.action === 'deleteInformation',
             choices: [
@@ -155,24 +160,38 @@ function init() {
         },
         {
             name: 'deleteDepartmentId',
-            message: 'Kindly choose the department you would like to delete.',
+            message: 'Kindly choose the department you would like to delete',
             type: 'list',
             when: (response) => response.whatToDelete === 'department',
             choices: renderDepartmentList,
         },
         {
             name: 'deleteRoleId',
-            message: 'Kindly choose the role you would like to delete.',
+            message: 'Kindly choose the role you would like to delete',
             type: 'list',
             when: (response) => response.whatToDelete === 'role',
             choices: renderRolesList,
         },
         {
             name: 'deleteEmployeeId',
-            message: 'Kindly choose the employee you would like to delete.',
+            message: 'Kindly choose the employee you would like to delete',
             type: 'list',
             when: (response) => response.whatToDelete === 'employee',
             choices: renderEmployeesChoicesList,
+        },
+        {
+            name: 'updateEmployeeId',
+            message: 'To update employee\'s manager kindly choose the employee from the provided list',
+            type: 'list',
+            when: (response) => response.action === 'updateEmployeeManager',
+            choices: renderEmployeesChoicesList,
+        },
+        {
+            name: 'updateEmployeeManagerId',
+            message: 'Kindly choose the manager you would like to apply for chosen employee',
+            type: 'list',
+            when: (response) => response.action === 'updateEmployeeManager',
+            choices: renderManagerChoicesList,
         },
     ]).then(async (response) => {
         console.log(response);
@@ -204,6 +223,9 @@ function init() {
                 break;
             case 'departmBudget':
                 await departmTotalBudget([response.departmentId]);
+                break;
+            case 'updateEmployeeManager':
+                await updateEmployeeManager([response.updateEmployeeManagerId, response.updateEmployeeId]);
                 break;
             case 'deleteInformation':
                 switch(response.whatToDelete) {

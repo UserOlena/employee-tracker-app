@@ -34,6 +34,7 @@ async function showEmployees() {
 }
 
 
+// function invokes connection.query() passing the specific values provided by user in the prompt in order to add a new department name to the DB
 async function addNewDepartment(valuesArray) {
     const sql = `
         INSERT INTO department(name)
@@ -43,6 +44,7 @@ async function addNewDepartment(valuesArray) {
 }
 
 
+// function invokes connection.query() passing the specific values provided by user in the prompt in order to add a new job role to the DB
 async function addNewRole(valuesArray) {
     const sql = `
     INSERT INTO role(title, salary, department_id)
@@ -52,6 +54,7 @@ async function addNewRole(valuesArray) {
 }
 
 
+// function invokes connection.query() passing the specific values provided by user in the prompt in order to add a new employee to the DB
 async function addNewEmployee(valuesArray) {
     const sql = `
     INSERT INTO employee(first_name, last_name, role_id, manager_id)
@@ -61,6 +64,7 @@ async function addNewEmployee(valuesArray) {
 }
 
 
+// function invokes connection.query() passing the specific values provided by user in the prompt in order to update employee role.
 async function updateEmployeeRole(valuesArray) {
     const sql = `
         UPDATE employee
@@ -71,7 +75,8 @@ async function updateEmployeeRole(valuesArray) {
 }
 
 
-// function that retrieves a list of current employees (id, first_name, last_name) from the employee table and their corresponding title from the role table.
+// function that retrieves a list of current employees (id, first_name, last_name) from the employee table and their corresponding title 
+// from the role table and generates the choices list for the list type prompt
 async function renderEmployeesChoicesList() {
     const sql = `
         SELECT e.id, e.first_name, e.last_name, coalesce(r.title, "no title applied") as title
@@ -91,6 +96,7 @@ async function renderEmployeesChoicesList() {
 }
 
 
+// function renders all the roles from the DB and generates the choices list for the list type prompt
 async function renderRolesList() {
     const rolesList = await showRoles();
     const roleChoices = [];
@@ -106,6 +112,7 @@ async function renderRolesList() {
 }
 
 
+// function renders all the departments from the DB and generates the choices list for the list type prompt
 async function renderDepartmentList() {
     const departList = await showDepartments();
     const departChoices = [];
@@ -121,6 +128,7 @@ async function renderDepartmentList() {
 }
 
 
+// function renders all the managers from the DB and generates the choices list for the list type prompt
 async function renderManagerChoicesList() {
     const sql = `
         SELECT e.id, e.first_name, e.last_name, coalesce(r.title, "no title applied") as title
@@ -159,6 +167,7 @@ async function departmTotalBudget(departmId) {
 }
 
 
+// function invokes connection.query() passing the sql code and the value in order to delete specific information provided by user in the prompts. 
 async function deleteInfo(tableName, values) {
     const sql = `
     DELETE FROM ${tableName}
@@ -168,6 +177,17 @@ async function deleteInfo(tableName, values) {
     //const DeleteInfo = new ActionsOnDb(sql, values);
     // DeleteInfo.delete(sql, values);
    // DeleteInfo.delete();
+}
+
+
+// 
+async function updateEmployeeManager(values) {
+    const sql = `
+        UPDATE employee
+        SET manager_id = ?
+        WHERE id = ?;`;
+    const log = `The employee's manager has been updated successfully!`;
+    await sqlInsert(sql, values, log)
 }
 
 
@@ -196,5 +216,6 @@ module.exports = {
     renderDepartmentList, 
     renderManagerChoicesList,
     departmTotalBudget,
-    deleteInfo
+    deleteInfo,
+    updateEmployeeManager
 }
