@@ -133,24 +133,16 @@ function init() {
                 console.table(currentEmployees);
                 break;
             case 'addDepartment':
-                const departArray = [];
-                departArray.push(response.departmentName);
-                await addNewDepartment(departArray);
+                await addNewDepartment([response.departmentName]);
                 break;
             case 'addRole':
-                const roleArray = [];
-                roleArray.push(response.roleTitle, parseInt(response.roleSalary), response.roleDepartmentId);
-                await addNewRole(roleArray);
+                await addNewRole([response.roleTitle, parseInt(response.roleSalary), response.roleDepartmentId]);
                 break;
             case 'addEmployee':
-                const employeeArray = [];
-                employeeArray.push(response.employeeFirstName, response.employeeLastName, response.employeeRoleId, response.employeeManagerId);
-                await addNewEmployee(employeeArray);
+                await addNewEmployee([response.employeeFirstName, response.employeeLastName, response.employeeRoleId, response.employeeManagerId]);
                 break;
             case 'updateEmployeeRole':
-                const updateEmployeeArray = [];
-                updateEmployeeArray.push(response.newRoleId, response.employeeId);
-                await updateEmployeeRole(updateEmployeeArray);
+                await updateEmployeeRole([response.newRoleId, response.employeeId]);
                 break;
             default:
                 console.log('No action found.');
