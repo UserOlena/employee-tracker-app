@@ -18,12 +18,12 @@ VALUES  (1, 'director', 250000, 1),
         (8, 'admission', 60000, 6);
 
 
-INSERT INTO employee(id, first_name, last_name, role_id)
-VALUES  (1, 'Bossy', 'Man', 1),
-        (2, 'Krishana', 'Anderson', 2),
-        (3, 'Emamnuel', 'Jucaban', 3),
-        (4, 'John', 'Doe', 4),
-        (5, 'Jane', 'Doe', 5),
-        (6, 'Rapunzel', 'Casing', 7),
-        (7, 'Ramon', 'Sanches', 4),
-        (8, 'Ryan', 'McGale', 8);
+INSERT INTO employee(id, first_name, last_name, role_id, manager_id)
+VALUES  (1, 'Bossy', 'Man', 1, null),
+        (2, 'Krishana', 'Anderson', 2, 1),
+        (3, 'Emamnuel', 'Jucaban', 3, 2),
+        (4, 'John', 'Doe', 4, 2),
+        (5, 'Jane', 'Doe', 5, 2),
+        (6, 'Rapunzel', 'Casing', 7, 1),
+        (7, 'Ramon', 'Sanches', 4, 2),
+        (8, 'Ryan', 'McGale', 8, 6);
