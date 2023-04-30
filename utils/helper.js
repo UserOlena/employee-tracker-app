@@ -29,8 +29,8 @@ async function showEmployees() {
             LEFT JOIN role r on e.role_id = r.id
             LEFT JOIN department d on r.department_id = d.id
             LEFT JOIN employee manager on e.manager_id = manager.id;`;
-        const result = await sqlSelect(sql);
-        return result;
+    const result = await sqlSelect(sql);
+    return result;
 }
 
 
@@ -85,11 +85,9 @@ async function renderEmployeesChoicesList() {
         const employee = {
             name: `${element.first_name} ${element.last_name} - ${element.title}`,
             value: element.id,
-        }
-    
+        }   
         employeeChoices.push(employee);
-    })
-      
+    })     
     return employeeChoices;
 }
 
@@ -103,13 +101,26 @@ async function renderRolesList() {
             name: `${element.title}`,
             value: element.id,
         }
-    
         roleChoices.push(role);
-    })
-      
+    })     
     console.log(roleChoices);
     return roleChoices;    
 }
 
 
-module.exports = { showDepartments, showRoles, showEmployees, addNewDepartment, addNewRole, addNewEmployee, updateEmployeeRole, renderEmployeesChoicesList, renderRolesList }
+async function renderDepartmentList() {
+    const departList = await showDepartments();
+    const departChoices = [];
+
+    departList.forEach(element => {
+        const department = {
+            name: `${element.name}`,
+            value: element.id,
+        }
+        departChoices.push(department);
+    })
+    return departChoices;
+}
+
+
+module.exports = { showDepartments, showRoles, showEmployees, addNewDepartment, addNewRole, addNewEmployee, updateEmployeeRole, renderEmployeesChoicesList, renderRolesList, renderDepartmentList }
