@@ -1,11 +1,12 @@
-const { sqlSelect, employeesListForPrompt } = require('../queries.js');
+const { sqlSelect, sqlInsert } = require('../queries.js');
 
 
 // function passes SQL to the "connection.query()" to retrieve the current departments when a user selects the "view all departments" option.
 async function showDepartments() {
     const sql = `
-        SELECT * FROM department;`;
-    sqlSelect(sql);
+        SELECT * FROM department;`;  
+    const result = await sqlSelect(sql);
+    return result;
 }
 
 
@@ -15,7 +16,8 @@ async function showRoles() {
         SELECT r.id, r.title, r.salary, d.name 
         FROM role r
             LEFT JOIN department d on r.department_id = d.id;`;
-    sqlSelect(sql);
+    const result = await sqlSelect(sql);;
+    return result;
 }
 
 
@@ -27,17 +29,61 @@ async function showEmployees() {
             LEFT JOIN role r on e.role_id = r.id
             LEFT JOIN department d on r.department_id = d.id
             LEFT JOIN employee manager on e.manager_id = manager.id;`;
-    sqlSelect(sql);
+        const result = await sqlSelect(sql);
+        return result;
 }
 
 
+async function addNewDepartment(valuesArray) {
+    const sql = `
+        INSERT INTO department(name)
+        VALUES (?);`;
+    const log = `The new ${valuesArray} department has been added to the database successfully!`;
+    await sqlInsert(sql, valuesArray, log);
+}
+
+
+async function addNewRole(valuesArray) {
+    const sql = `
+    INSERT INTO role(title, salary, department_id)
+    VALUES (?, ?, ?);`;
+    const log = `The new ${valuesArray[0]} role and assosiated salary of ${valuesArray[1]} has been added to the database successfully!`;
+    await sqlInsert(sql, valuesArray, log);
+}
+
+
+async function addNewEmployee(valuesArray) {
+    const sql = `
+    INSERT INTO employee(first_name, last_name, role_id, manager_id)
+    VALUES (?, ?, ?, ?);`;
+    const log = `New employee ${valuesArray[0]} ${valuesArray[1]} has been added to the "employee" database table succesfully!`;
+    await sqlInsert(sql, valuesArray, log);
+}
+
+
+async function updateEmployeeRole(valuesArray) {
+
+    const sql = `
+        UPDATE employee
+        SET role_id = ?
+        WHERE id = ?;`;
+    const log = `Employee's role has been updated successfully!`   
+    await sqlInsert(sql, valuesArray, log);
+}
+
+
+// function that retrieves a list of current employees (id, first_name, last_name) from the employee table and their corresponding title from the role table.
 async function renderEmployeesChoicesList() {
-    const employeesList = await employeesListForPrompt();
+    const sql = `
+        SELECT e.id, e.first_name, e.last_name, coalesce(r.title, "no title applied") as title
+        FROM employee e 
+            LEFT JOIN role r on e.role_id = r.id;`;
+    const employeesList = await sqlSelect(sql);
     const employeeChoices = [];
        
     employeesList.forEach(element => {
         const employee = {
-            name: `${element.first_name} ${element.last_name} - ${element.department_name}`,
+            name: `${element.first_name} ${element.last_name} - ${element.title}`,
             value: element.id,
         }
     
@@ -48,22 +94,22 @@ async function renderEmployeesChoicesList() {
 }
 
 
-async function renderDepartmentsList() {
-    const departmentList = await selectAll('department');
-    const departmentChoices = [];
+async function renderRolesList() {
+    const rolesList = await showRoles();
+    const roleChoices = [];
        
-    departmentList.forEach(element => {
-        const department = {
-            name: `${element.name}`,
+    rolesList.forEach(element => {
+        const role = {
+            name: `${element.title}`,
             value: element.id,
         }
     
-        departmentChoices.push(department);
+        roleChoices.push(role);
     })
       
-    console.log(departmentChoices);
-    return departmentChoices;
+    console.log(roleChoices);
+    return roleChoices;    
 }
 
 
-module.exports = { showDepartments, showRoles, showEmployees, renderEmployeesChoicesList, renderDepartmentsList }
+module.exports = { showDepartments, showRoles, showEmployees, addNewDepartment, addNewRole, addNewEmployee, updateEmployeeRole, renderEmployeesChoicesList, renderRolesList }

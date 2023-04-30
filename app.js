@@ -1,6 +1,5 @@
 const inquirer = require('inquirer');
-const { selectAll, addNewDepartment, addRole, addEmployee, updateEmployeeRole } = require('./queries');
-const { showDepartments, showRoles, showEmployees, renderEmployeesChoicesList, renderDepartmentsList } = require('./utils/helper')
+const { showDepartments, showRoles, showEmployees, addNewDepartment, addNewRole, addNewEmployee, updateEmployeeRole, renderEmployeesChoicesList, renderRolesList } = require('./utils/helper')
 
 
 inquirer.prompt([
@@ -167,37 +166,47 @@ inquirer.prompt([
         ]
     },
     {
-        name: 'employeeToUpdate',
+        name: 'employeeId',
         message: 'Kindly choose the existing employee to update their information.',
         type: 'list',
         when: (response) => response.action === 'updateEmployeeRole',
         choices: renderEmployeesChoicesList,
     },
     {
-        name: 'updatedRole',
+        name: 'newRoleId',
         message: 'Kindly choose the new employee role to update their information.',
         type: 'list',
-        when: (response) => response.employeeToUpdate,
-        choices: renderDepartmentsList,
+        when: (response) => response.employeeId,
+        choices: renderRolesList,
     }
 ]).then(async (response) => {
     console.log(response);
 
     if (response.action === 'department') {
-        await showDepartments();
+        const currentDepartments = await showDepartments();
+        console.table(currentDepartments);
     } else if (response.action === 'role') {
-        await showRoles();
+        const currentRoles = await showRoles();
+        console.table(currentRoles);
     } else if(response.action === 'employee') {
-        await showEmployees();
+        const currentEmployees = await showEmployees();
+        console.table(currentEmployees);
     } else if (response.action === 'addDepartment') {
-        addNewDepartment(response.departmentName);
+        const array = [];
+        array.push(response.departmentName);
+        await addNewDepartment(array);
     } else if (response.action === 'addRole') {
-        addRole(response.roleTitle, response.roleSalary, response.roleDepartmentId);
+        const array = [];
+        array.push(response.roleTitle, parseInt(response.roleSalary), response.roleDepartmentId);
+        await addNewRole(array);
     } else if (response.action === 'addEmployee') {
-        addEmployee(response.employeeFirstName, response.employeeLastName, response.employeeRoleId, response.employeeManagerId);
-    } else if (response.employeeToUpdate) {
-        console.log(`employee id: ${response.employeeToUpdate}, new role: ${response.updatedRole}`);
-        updateEmployeeRole(response.employeeToUpdate, response.updatedRole);
+        const array = [];
+        array.push(response.employeeFirstName, response.employeeLastName, response.employeeRoleId, response.employeeManagerId);
+        await addNewEmployee(array);
+    } else if (response.employeeId) {
+        const array = [];
+        array.push(response.newRoleId, response.employeeId);
+        await updateEmployeeRole(array);
     } else {
         console.log('No action found.');
     }
