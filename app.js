@@ -10,7 +10,8 @@ const {
     renderEmployeesChoicesList, 
     renderRolesList, 
     renderDepartmentList, 
-    renderManagerChoicesList 
+    renderManagerChoicesList,
+    departmTotalBudget
 } = require('./utils/helper');
 
 function init() {
@@ -48,6 +49,10 @@ function init() {
                 {
                     name: 'Update an employee role',
                     value: 'updateEmployeeRole',
+                },
+                {
+                    name: 'View the total utilized budget of a department',
+                    value: 'departmBudget',
                 },
             ],
         },
@@ -115,7 +120,14 @@ function init() {
             type: 'list',
             when: (response) => response.action === 'updateEmployeeRole',
             choices: renderRolesList,
-        }
+        },
+        {
+            name: 'departmentId',
+            message: 'Kindly choose the department you would like to view the total utilized budget of.',
+            type: 'list',
+            when: (response) => response.action === 'departmBudget',
+            choices: renderDepartmentList,
+        },
     ]).then(async (response) => {
         console.log(response);
 
@@ -143,6 +155,9 @@ function init() {
                 break;
             case 'updateEmployeeRole':
                 await updateEmployeeRole([response.newRoleId, response.employeeId]);
+                break;
+            case 'departmBudget':
+                await departmTotalBudget([response.departmentId]);
                 break;
             default:
                 console.log('No action found.');

@@ -2,9 +2,9 @@ const connection = require('./config/connection.js');
 
 
 // function is invoked to fetch information from the database and present it in a tabular format on the console.
-async function sqlSelect(sql) {
+async function sqlSelect(sql, values) {
     try {
-        const [ result ] = await connection.query(sql);
+        const [ result ] = await connection.query(sql, values);
         return result;
     } catch (error) {
         console.log(error);
