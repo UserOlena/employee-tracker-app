@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const { showDepartments, showRoles, showEmployees, addNewDepartment, addNewRole, addNewEmployee, updateEmployeeRole, renderEmployeesChoicesList, renderRolesList, renderDepartmentList } = require('./utils/helper')
+const { showDepartments, showRoles, showEmployees, addNewDepartment, addNewRole, addNewEmployee, updateEmployeeRole, renderEmployeesChoicesList, renderRolesList, renderDepartmentList, renderManagerChoicesList } = require('./utils/helper')
 
 
 inquirer.prompt([
@@ -88,24 +88,7 @@ inquirer.prompt([
         message: `Assign a manager to the newly added employee or choose "Manager doesn\'t apply to this employee".`,
         type: 'list',
         when: (response) => response.action === 'addEmployee',
-        choices: [
-            {
-                name: 'Bossy Man - director',
-                value: 1,
-            },
-            {
-               name: 'Krishana Anderson - success manager',
-               value: 2, 
-            },
-            {
-               name: 'Rapunzel Casing - admission manager',
-               value: 6, 
-            },
-            {
-               name: 'Manager doesn\'t apply to this employee',
-               value: null, 
-            },
-        ]
+        choices: renderManagerChoicesList,
     },
     {
         name: 'employeeId',

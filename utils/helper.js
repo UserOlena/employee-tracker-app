@@ -123,4 +123,29 @@ async function renderDepartmentList() {
 }
 
 
-module.exports = { showDepartments, showRoles, showEmployees, addNewDepartment, addNewRole, addNewEmployee, updateEmployeeRole, renderEmployeesChoicesList, renderRolesList, renderDepartmentList }
+async function renderManagerChoicesList() {
+    const sql = `
+        SELECT e.id, e.first_name, e.last_name, coalesce(r.title, "no title applied") as title
+        FROM employee e 
+            LEFT JOIN role r on e.role_id = r.id
+        Where r.id in (1, 2, 7);`;
+    const employeesList = await sqlSelect(sql);
+    const employeeChoices = [
+        {
+        name: 'Manager doesn\'t apply to this employee',
+        value: null, 
+        }
+    ];
+       
+    employeesList.forEach(element => {
+        const employee = {
+            name: `${element.first_name} ${element.last_name} - ${element.title}`,
+            value: element.id,
+        }   
+        employeeChoices.unshift(employee);
+    })     
+    return employeeChoices;
+}
+
+
+module.exports = { showDepartments, showRoles, showEmployees, addNewDepartment, addNewRole, addNewEmployee, updateEmployeeRole, renderEmployeesChoicesList, renderRolesList, renderDepartmentList, renderManagerChoicesList }
