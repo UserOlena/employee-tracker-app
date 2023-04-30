@@ -81,40 +81,7 @@ inquirer.prompt([
         message: `Kindly choose the role associated with the newly added employee.`,
         type: 'list',
         when: (response) => response.action === 'addEmployee',
-        choices: [
-            {
-                name: 'director',
-                value: 1,
-            },
-            {
-               name: 'success manager',
-               value: 2, 
-            },
-            {
-                name: 'instructor',
-                value: 3,
-            },
-            {
-                name: 'teacher assistant',
-                value: 4,
-            },
-            {
-                name: 'junior teacher assistant',
-                value: 5,
-            },
-            {
-                name: 'tutor',
-                value: 6,
-            },
-            {
-                name:'admission manager',
-                value: 7,
-            },
-            {
-                name: 'admission',
-                value: 8,
-            },
-        ]
+        choices: renderRolesList,
     },
     {
         name: 'employeeManagerId',
