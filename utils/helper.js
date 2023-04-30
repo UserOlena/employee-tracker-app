@@ -126,7 +126,7 @@ async function renderManagerChoicesList() {
         SELECT e.id, e.first_name, e.last_name, coalesce(r.title, "no title applied") as title
         FROM employee e 
             LEFT JOIN role r on e.role_id = r.id
-        Where r.id in (1, 2, 7);`;
+        Where r.id in (1, 2, 3, 9, 11, 12, 13, 16, 18);`;
     const employeesList = await sqlSelect(sql);
     const employeeChoices = [
         {
@@ -159,6 +159,30 @@ async function departmTotalBudget(departmId) {
 }
 
 
+async function deleteInfo(tableName, values) {
+    const sql = `
+    DELETE FROM ${tableName}
+    WHERE id = ?;`;
+    const log = `The ${tableName} has been deleted from the database successfully!`;
+    await sqlInsert(sql, values, log);
+    //const DeleteInfo = new ActionsOnDb(sql, values);
+    // DeleteInfo.delete(sql, values);
+   // DeleteInfo.delete();
+}
+
+
+// class ActionsOnDb {
+//     constructor(sql, values) {
+//         this.sql = sql;
+//         this.values = values;
+//     }
+
+//     async delete() {
+//         await sqlInsert(this.sql, this.values);
+//     }
+// }
+
+
 module.exports = { 
     showDepartments, 
     showRoles, 
@@ -171,5 +195,6 @@ module.exports = {
     renderRolesList, 
     renderDepartmentList, 
     renderManagerChoicesList,
-    departmTotalBudget
+    departmTotalBudget,
+    deleteInfo
 }

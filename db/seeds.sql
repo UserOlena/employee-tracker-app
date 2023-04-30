@@ -26,7 +26,7 @@ VALUES  (1, 'CEO', 400000, 1),
         (15, 'Quality Assurance', 80000, 4),
         (16, 'Director of Accounting', 130000, 5),
         (17, 'Accounting', 70000, 5),
-        (18, 'Cleaning Superviser', 45000, 1),
+        (18, 'Cleaning Superviser', 45000, 6),
         (19, 'Floor Cleaner', 35000, 6),
         (20, 'Room Cleaner', 35000, 6);
 
