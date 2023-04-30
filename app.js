@@ -11,7 +11,8 @@ const {
     renderRolesList, 
     renderDepartmentList, 
     renderManagerChoicesList,
-    departmTotalBudget
+    departmTotalBudget,
+    deleteInfo,
 } = require('./utils/helper');
 
 function init() {
@@ -53,6 +54,10 @@ function init() {
                 {
                     name: 'View the total utilized budget of a department',
                     value: 'departmBudget',
+                },
+                {
+                    name: 'Delete information',
+                    value: 'deleteInformation',
                 },
             ],
         },
@@ -128,6 +133,47 @@ function init() {
             when: (response) => response.action === 'departmBudget',
             choices: renderDepartmentList,
         },
+        {
+            name: 'whatToDelete',
+            message: 'Please select the option you want to delete.',
+            type: 'list',
+            when: (response) => response.action === 'deleteInformation',
+            choices: [
+                {
+                    name: 'Department',
+                    value: 'department',
+                },
+                {
+                    name: 'Role',
+                    value: 'role',
+                },
+                {
+                    name: 'Employee',
+                    value: 'employee',
+                },
+            ],
+        },
+        {
+            name: 'deleteDepartmentId',
+            message: 'Kindly choose the department you would like to delete.',
+            type: 'list',
+            when: (response) => response.whatToDelete === 'department',
+            choices: renderDepartmentList,
+        },
+        {
+            name: 'deleteRoleId',
+            message: 'Kindly choose the role you would like to delete.',
+            type: 'list',
+            when: (response) => response.whatToDelete === 'role',
+            choices: renderRolesList,
+        },
+        {
+            name: 'deleteEmployeeId',
+            message: 'Kindly choose the employee you would like to delete.',
+            type: 'list',
+            when: (response) => response.whatToDelete === 'employee',
+            choices: renderEmployeesChoicesList,
+        },
     ]).then(async (response) => {
         console.log(response);
 
@@ -158,6 +204,19 @@ function init() {
                 break;
             case 'departmBudget':
                 await departmTotalBudget([response.departmentId]);
+                break;
+            case 'deleteInformation':
+                switch(response.whatToDelete) {
+                    case 'department':
+                        await deleteInfo(response.whatToDelete, [response.deleteDepartmentId]);
+                        break;
+                    case 'role':
+                        await deleteInfo(response.whatToDelete, [response.deleteRoleId]);
+                        break;
+                    case 'employee':
+                        await deleteInfo(response.whatToDelete, [response.deleteEmployeeId]);
+                        break;
+                }
                 break;
             default:
                 console.log('No action found.');
