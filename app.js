@@ -13,7 +13,8 @@ const {
     renderManagerChoicesList,
     departmTotalBudget,
     deleteInfo,
-    updateEmployeeManager
+    updateEmployeeManager,
+    viewEmployeesByDepartment
 } = require('./utils/helper');
 
 function init() {
@@ -34,6 +35,10 @@ function init() {
                 {
                     name: 'View all employees',
                     value: 'employee',
+                },
+                {
+                    name: 'View employees by department',
+                    value: 'employeesByDepartment',
                 },
                 {
                     name: 'Add a department',
@@ -193,6 +198,13 @@ function init() {
             when: (response) => response.action === 'updateEmployeeManager',
             choices: renderManagerChoicesList,
         },
+        {
+            name: 'departmentIdToViewEmployees',
+            message: 'Kindly choose the department in order to view its employees',
+            type: 'list',
+            when: (response) => response.action === 'employeesByDepartment',
+            choices: renderDepartmentList,
+        },
     ]).then(async (response) => {
         console.log(response);
 
@@ -226,6 +238,9 @@ function init() {
                 break;
             case 'updateEmployeeManager':
                 await updateEmployeeManager([response.updateEmployeeManagerId, response.updateEmployeeId]);
+                break;
+            case 'employeesByDepartment':
+                await viewEmployeesByDepartment([response.departmentIdToViewEmployees]);
                 break;
             case 'deleteInformation':
                 switch(response.whatToDelete) {

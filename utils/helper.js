@@ -180,7 +180,7 @@ async function deleteInfo(tableName, values) {
 }
 
 
-// 
+// function invokes connection.query() passing the specific values provided by user in the prompt in order to update employee's manager in the DB
 async function updateEmployeeManager(values) {
     const sql = `
         UPDATE employee
@@ -189,6 +189,20 @@ async function updateEmployeeManager(values) {
     const log = `The employee's manager has been updated successfully!`;
     await sqlInsert(sql, values, log)
 }
+
+
+async function viewEmployeesByDepartment(values) {
+    const sql = `           
+        SELECT e.id, e.first_name, e.last_name, r.title, r.salary, manager.first_name as manager_first_name, manager.last_name as manager_last_name
+        FROM employee e
+            JOIN role r on e.role_id = r.id
+            JOIN employee manager on e.manager_id = manager.id
+            JOIN department d on r.department_id = d.id
+        WHERE d.id = ?;`;
+    const result = await sqlSelect(sql, values);
+    console.table(result);
+}
+
 
 
 // class ActionsOnDb {
@@ -217,5 +231,6 @@ module.exports = {
     renderManagerChoicesList,
     departmTotalBudget,
     deleteInfo,
-    updateEmployeeManager
+    updateEmployeeManager,
+    viewEmployeesByDepartment
 }
