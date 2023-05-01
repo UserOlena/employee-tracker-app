@@ -29,29 +29,8 @@ function init() {
             type: 'list',
             choices: [
                 {
-                    name: 'View all departments',
-                    value: 'department',
-                },
-                {
-                    name: 'View all roles',
-                    value: 'role',
-                },
-                {
-                    name: 'View all employees',
-                    value: 'employee',
-                },
-                {
-                    name: 'View employees by department',
-                    value: 'employeesByDepartment',
-                },
-                {
-                    name: 'View employees by manager',
-                    value: 'employeesByManager',
-                },
-                {
                     name: 'Add a department',
-                    value: 'addDepartment',
-                
+                    value: 'addDepartment',              
                 },
                 {
                     name: 'Add a role',
@@ -62,20 +41,40 @@ function init() {
                     value: 'addEmployee',
                 },
                 {
-                    name: 'Update an employee role',
-                    value: 'updateEmployeeRole',
-                },
-                {
-                    name: 'View the total utilized budget of a department',
-                    value: 'departmBudget',
-                },
-                {
                     name: 'Delete information',
                     value: 'deleteInformation',
                 },
                 {
                     name: 'Update employee\'s manager',
                     value: 'updateEmployeeManager',
+                },
+                {
+                    name: 'View all roles',
+                    value: 'role',
+                },
+                {
+                    name: 'View all departments',
+                    value: 'department',
+                },
+                {
+                    name: 'View all employees',
+                    value: 'employee',
+                },
+                {
+                    name: 'Update an employee role',
+                    value: 'updateEmployeeRole',
+                },
+                {
+                    name: 'View employees by department',
+                    value: 'employeesByDepartment',
+                },
+                {
+                    name: 'View employees by manager',
+                    value: 'employeesByManager',
+                },
+                {
+                    name: 'View the total utilized budget of a department',
+                    value: 'departmBudget',
                 },
             ],
         },
@@ -287,13 +286,3 @@ function init() {
  
 
 init();
-
-
-
-  
-
-
-        
-
-
-
