@@ -204,6 +204,18 @@ async function viewEmployeesByDepartment(values) {
 }
 
 
+// 
+async function viewEmployeesByManager(values) {
+    const sql = `
+        SELECT e.id, e.first_name, e.last_name, r.title, r.salary, manager.first_name as manager_first_name, manager.last_name as manager_last_name
+        FROM employee e
+            JOIN role r on e.role_id = r.id
+            JOIN employee manager on e.manager_id = manager.id
+        WHERE manager.id = ?;`;
+    const result = await sqlSelect(sql, values);
+    console.table(result);
+}
+
 
 // class ActionsOnDb {
 //     constructor(sql, values) {
@@ -232,5 +244,6 @@ module.exports = {
     departmTotalBudget,
     deleteInfo,
     updateEmployeeManager,
-    viewEmployeesByDepartment
+    viewEmployeesByDepartment,
+    viewEmployeesByManager
 }
