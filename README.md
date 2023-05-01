@@ -4,7 +4,7 @@
 
 --- 
 > The Comand Line Employee Tracker app was developed as a component of the Berkeley Coding Bootcamp Challenge 12. Users can easily view, interact with, and modify employee information stored in a database by providing input in the command line. This enables them to manage and keep track of employee data with ease.
-- The recorded [video]() on the screen demonstrates how the Employee Tracker application operates.
+- The recorded [video](https://1drv.ms/v/s!Ak2qWe8ZT6ny2TYysoMloJ2fHQug?e=p1ViIv) on the screen demonstrates how the Employee Tracker application operates.
 
 ---
 ## Table of Contents
