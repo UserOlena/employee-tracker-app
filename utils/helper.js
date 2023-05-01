@@ -1,4 +1,5 @@
 const { sqlSelect, sqlInsert } = require('../queries.js');
+const cTable = require('console.table');
  
 
 // function passes SQL to the "connection.query()" to retrieve the current departments when a user selects the "view all departments" option.

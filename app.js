@@ -1,4 +1,5 @@
 const inquirer = require('inquirer');
+const cTable = require('console.table');
 const { 
     showDepartments, 
     showRoles, 
@@ -219,8 +220,6 @@ function init() {
             choices: renderManagerList,
         },
     ]).then(async (response) => {
-        console.log(response);
-
         switch (response.action) {
             case 'department':
                 const currentDepartments = await showDepartments();
