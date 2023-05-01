@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const cTable = require('console.table');
+const { isDecimal, isVarChar30 } = require('./utils/validation')
 const { 
     showDepartments, 
     showRoles, 
@@ -82,18 +83,21 @@ function init() {
             name: 'departmentName',
             message: 'Kindly type the new department name in order to add it to the Department database table.',
             type: 'input',
+            validate: isVarChar30,
             when: (response) => response.action === 'addDepartment',
         },
         {
             name: 'roleTitle',
             message: 'Kindly type the new role title in order to add it to the Role database table.',
             type: 'input',
+            validate: isVarChar30,
             when: (response) => response.action === 'addRole',
         },
         {
             name: 'roleSalary',
             message: `Kindly type the salary for a newly added title in order to add it to the Role database table.`,
             type: 'input',
+            validate: isDecimal,
             when: (response) => response.action === 'addRole',
         },
         {
@@ -107,12 +111,14 @@ function init() {
             name: 'employeeFirstName',
             message: 'Kindly type the new employee first name in order to add them to the Employee database table',
             type: 'input',
+            validate: isVarChar30,
             when: (response) => response.action === 'addEmployee',
         },
         {
             name: 'employeeLastName',
             message: 'Kindly type the new employee last name in order to add them to the Employee database table',
             type: 'input',
+            validate: isVarChar30,
             when: (response) => response.action === 'addEmployee',
         },
         {
