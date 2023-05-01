@@ -1,5 +1,5 @@
 const { sqlSelect, sqlInsert } = require('../queries.js');
-
+ 
 
 // function passes SQL to the "connection.query()" to retrieve the current departments when a user selects the "view all departments" option.
 async function showDepartments() {
@@ -128,20 +128,28 @@ async function renderDepartmentList() {
 }
 
 
+async function renderManagerListForNewEmployee() {
+    return await renderManagerList(true);
+}
+
 // function renders all the managers from the DB and generates the choices list for the list type prompt
-async function renderManagerChoicesList() {
+async function renderManagerList(object = false) {
     const sql = `
         SELECT e.id, e.first_name, e.last_name, coalesce(r.title, "no title applied") as title
         FROM employee e 
             LEFT JOIN role r on e.role_id = r.id
         Where r.id in (1, 2, 3, 9, 11, 12, 13, 16, 18);`;
     const employeesList = await sqlSelect(sql);
-    const employeeChoices = [
-        {
-        name: 'Manager doesn\'t apply to this employee',
-        value: null, 
-        }
-    ];
+    const employeeChoices = [];
+
+    if (object) {
+        employeeChoices.push(
+            {
+            name: 'Manager doesn\'t apply to this employee',
+            value: null, 
+            }
+        );
+    }
        
     employeesList.forEach(element => {
         const employee = {
@@ -240,10 +248,11 @@ module.exports = {
     renderEmployeesChoicesList, 
     renderRolesList, 
     renderDepartmentList, 
-    renderManagerChoicesList,
+    renderManagerList,
     departmTotalBudget,
     deleteInfo,
     updateEmployeeManager,
     viewEmployeesByDepartment,
-    viewEmployeesByManager
+    viewEmployeesByManager,
+    renderManagerListForNewEmployee,
 }
