@@ -10,12 +10,13 @@ const {
     renderEmployeesChoicesList, 
     renderRolesList, 
     renderDepartmentList, 
-    renderManagerChoicesList,
+    renderManagerList,
     departmTotalBudget,
     deleteInfo,
     updateEmployeeManager,
     viewEmployeesByDepartment,
-    viewEmployeesByManager
+    viewEmployeesByManager,
+    renderManagerListForNewEmployee
 } = require('./utils/helper');
 
 function init() {
@@ -125,7 +126,7 @@ function init() {
             message: `Assign a manager to the newly added employee or choose "Manager doesn\'t apply to this employee"`,
             type: 'list',
             when: (response) => response.action === 'addEmployee',
-            choices: renderManagerChoicesList,
+            choices: renderManagerListForNewEmployee,
         },
         {
             name: 'employeeId',
@@ -201,7 +202,7 @@ function init() {
             message: 'Kindly choose the manager you would like to apply for chosen employee',
             type: 'list',
             when: (response) => response.action === 'updateEmployeeManager',
-            choices: renderManagerChoicesList,
+            choices: renderManagerList,
         },
         {
             name: 'departmentIdToViewEmployees',
@@ -215,7 +216,7 @@ function init() {
             message: 'Kindly choose the manager from the provided list in order to view all the employees assigned to that manager',
             type: 'list',
             when: (response) => response.action === 'employeesByManager',
-            choices: renderManagerChoicesList,
+            choices: renderManagerList,
         },
     ]).then(async (response) => {
         console.log(response);
