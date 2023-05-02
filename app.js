@@ -21,6 +21,7 @@ const {
     renderManagerListForNewEmployee
 } = require('./utils/helper');
 
+
 function init() {
     inquirer.prompt([
         {
@@ -45,6 +46,10 @@ function init() {
                     value: 'deleteInformation',
                 },
                 {
+                    name: 'Update an employee role',
+                    value: 'updateEmployeeRole',
+                },
+                {
                     name: 'Update employee\'s manager',
                     value: 'updateEmployeeManager',
                 },
@@ -59,10 +64,6 @@ function init() {
                 {
                     name: 'View all employees',
                     value: 'employee',
-                },
-                {
-                    name: 'Update an employee role',
-                    value: 'updateEmployeeRole',
                 },
                 {
                     name: 'View employees by department',

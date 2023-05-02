@@ -1,8 +1,8 @@
 const connection = require('./config/connection.js');
 
 
-// function is invoked to fetch information from the database and present it in a tabular format on the console.
-async function sqlSelect(sql, values) {
+// function is invoked to fetch information from the database
+async function sqlRetrieveData(sql, values) {
     try {
         const [ result ] = await connection.query(sql, values);
         return result;
@@ -12,8 +12,8 @@ async function sqlSelect(sql, values) {
 }
 
 
-// if the user selects to add specific information from the prompts, the function is designed to insert this new information into the database.
-async function sqlInsert(sql, newValues, logInfo) {  
+// if the user selects to add, modify or delete specific information from the prompts, the function is designed to process this information in the database.
+async function sqlModifyData(sql, newValues, logInfo) {  
     try {
     await connection.query(sql, newValues);
     console.log(logInfo);
@@ -22,6 +22,5 @@ async function sqlInsert(sql, newValues, logInfo) {
     }
 }
 
-//connection.end();
 
-module.exports = { sqlSelect, sqlInsert }
+module.exports = { sqlRetrieveData, sqlModifyData }
