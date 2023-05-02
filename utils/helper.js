@@ -1,4 +1,4 @@
-const { sqlSelect, sqlInsert } = require('../queries.js');
+const { sqlRetrieveData, sqlModifyData } = require('../queries.js');
 const cTable = require('console.table');
  
 
@@ -6,7 +6,7 @@ const cTable = require('console.table');
 async function showDepartments() {
     const sql = `
         SELECT * FROM department;`;  
-    const result = await sqlSelect(sql);
+    const result = await sqlRetrieveData(sql);
     return result;
 }
 
@@ -17,7 +17,7 @@ async function showRoles() {
         SELECT r.id, r.title, r.salary, d.name as department_name
         FROM role r
             LEFT JOIN department d on r.department_id = d.id;`;
-    const result = await sqlSelect(sql);;
+    const result = await sqlRetrieveData(sql);;
     return result;
 }
 
@@ -30,7 +30,7 @@ async function showEmployees() {
             LEFT JOIN role r on e.role_id = r.id
             LEFT JOIN department d on r.department_id = d.id
             LEFT JOIN employee manager on e.manager_id = manager.id;`;
-    const result = await sqlSelect(sql);
+    const result = await sqlRetrieveData(sql);
     return result;
 }
 
@@ -41,7 +41,7 @@ async function addNewDepartment(valuesArray) {
         INSERT INTO department(name)
         VALUES (?);`;
     const log = `The new ${valuesArray} department has been added to the database successfully!`;
-    await sqlInsert(sql, valuesArray, log);
+    await sqlModifyData(sql, valuesArray, log);
 }
 
 
@@ -51,7 +51,7 @@ async function addNewRole(valuesArray) {
     INSERT INTO role(title, salary, department_id)
     VALUES (?, ?, ?);`;
     const log = `The new ${valuesArray[0]} role and assosiated salary of ${valuesArray[1]} has been added to the database successfully!`;
-    await sqlInsert(sql, valuesArray, log);
+    await sqlModifyData(sql, valuesArray, log);
 }
 
 
@@ -61,7 +61,7 @@ async function addNewEmployee(valuesArray) {
     INSERT INTO employee(first_name, last_name, role_id, manager_id)
     VALUES (?, ?, ?, ?);`;
     const log = `New employee ${valuesArray[0]} ${valuesArray[1]} has been added to the "employee" database table succesfully!`;
-    await sqlInsert(sql, valuesArray, log);
+    await sqlModifyData(sql, valuesArray, log);
 }
 
 
@@ -72,7 +72,7 @@ async function updateEmployeeRole(valuesArray) {
         SET role_id = ?
         WHERE id = ?;`;
     const log = `Employee's role has been updated successfully!`   
-    await sqlInsert(sql, valuesArray, log);
+    await sqlModifyData(sql, valuesArray, log);
 }
 
 
@@ -83,7 +83,7 @@ async function renderEmployeesChoicesList() {
         SELECT e.id, e.first_name, e.last_name, coalesce(r.title, "no title applied") as title
         FROM employee e 
             LEFT JOIN role r on e.role_id = r.id;`;
-    const employeesList = await sqlSelect(sql);
+    const employeesList = await sqlRetrieveData(sql);
     const employeeChoices = [];
        
     employeesList.forEach(element => {
@@ -129,9 +129,11 @@ async function renderDepartmentList() {
 }
 
 
+// function is invoked when user creates a new employee. This function passes "true" to the renderManagerList() which ensures that managers list will also include a value "Manager doesn\'t apply to this employee"
 async function renderManagerListForNewEmployee() {
     return await renderManagerList(true);
 }
+
 
 // function renders all the managers from the DB and generates the choices list for the list type prompt
 async function renderManagerList(object = false) {
@@ -140,7 +142,7 @@ async function renderManagerList(object = false) {
         FROM employee e 
             LEFT JOIN role r on e.role_id = r.id
         Where r.id in (1, 2, 3, 9, 11, 12, 13, 16, 18);`;
-    const employeesList = await sqlSelect(sql);
+    const employeesList = await sqlRetrieveData(sql);
     const employeeChoices = [];
 
     if (object) {
@@ -166,12 +168,12 @@ async function renderManagerList(object = false) {
 // function that take department ID as a parameter and retrieves the total salary of employees working in that department.
 async function departmTotalBudget(departmId) {
     const sql = `
-    SELECT SUM(salary) AS "Total Salary For Chosen Department"
-    FROM employee e
-		JOIN role r
-    WHERE e.role_id = r.id
-    AND r.department_id = ?;`;
-    const result = await sqlSelect(sql, departmId);
+        SELECT SUM(salary) AS "Total Salary For Chosen Department"
+        FROM employee e
+            JOIN role r
+        WHERE e.role_id = r.id
+        AND r.department_id = ?;`;
+    const result = await sqlRetrieveData(sql, departmId);
     console.table(result);
 }
 
@@ -179,13 +181,10 @@ async function departmTotalBudget(departmId) {
 // function invokes connection.query() passing the sql code and the value in order to delete specific information provided by user in the prompts. 
 async function deleteInfo(tableName, values) {
     const sql = `
-    DELETE FROM ${tableName}
-    WHERE id = ?;`;
+        DELETE FROM ${tableName}
+        WHERE id = ?;`;
     const log = `The ${tableName} has been deleted from the database successfully!`;
-    await sqlInsert(sql, values, log);
-    //const DeleteInfo = new ActionsOnDb(sql, values);
-    // DeleteInfo.delete(sql, values);
-   // DeleteInfo.delete();
+    await sqlModifyData(sql, values, log);
 }
 
 
@@ -196,10 +195,11 @@ async function updateEmployeeManager(values) {
         SET manager_id = ?
         WHERE id = ?;`;
     const log = `The employee's manager has been updated successfully!`;
-    await sqlInsert(sql, values, log)
+    await sqlModifyData(sql, values, log)
 }
 
 
+// function retrieves and displays all employees assigned to a specific department
 async function viewEmployeesByDepartment(values) {
     const sql = `           
         SELECT e.id, e.first_name, e.last_name, r.title, r.salary, manager.first_name as manager_first_name, manager.last_name as manager_last_name
@@ -208,12 +208,12 @@ async function viewEmployeesByDepartment(values) {
             JOIN employee manager on e.manager_id = manager.id
             JOIN department d on r.department_id = d.id
         WHERE d.id = ?;`;
-    const result = await sqlSelect(sql, values);
+    const result = await sqlRetrieveData(sql, values);
     console.table(result);
 }
 
 
-// 
+// function retrieves and displays all employees assigned to a specific manager
 async function viewEmployeesByManager(values) {
     const sql = `
         SELECT e.id, e.first_name, e.last_name, r.title, r.salary, manager.first_name as manager_first_name, manager.last_name as manager_last_name
@@ -221,21 +221,9 @@ async function viewEmployeesByManager(values) {
             JOIN role r on e.role_id = r.id
             JOIN employee manager on e.manager_id = manager.id
         WHERE manager.id = ?;`;
-    const result = await sqlSelect(sql, values);
+    const result = await sqlRetrieveData(sql, values);
     console.table(result);
 }
-
-
-// class ActionsOnDb {
-//     constructor(sql, values) {
-//         this.sql = sql;
-//         this.values = values;
-//     }
-
-//     async delete() {
-//         await sqlInsert(this.sql, this.values);
-//     }
-// }
 
 
 module.exports = { 
